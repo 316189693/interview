@@ -1,17 +1,14 @@
 package com.interview;
 
 
-import jdk.nashorn.internal.runtime.regexp.joni.Option;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -39,45 +36,26 @@ public class Utils {
         Assertions.assertNotNull(saleItems, "saleItems list is null");
         Map<Integer, Double> map = saleItems.stream()
                 .collect(Collectors.groupingBy(Utils::getQuarter, Collectors.summingDouble(SaleItem::getSaleNumbers)));
-        return mapToList(map);
+        return mapToList(map, (o)->o);
     }
 
     private static int getQuarter(SaleItem saleItem) {
         return saleItem.getMonth() % 3 > 0 ? (saleItem.getMonth() / 3 + 1) : (saleItem.getMonth() / 3);
     }
 
-    private static List<QuarterSalesItem>  mapToList2(Map<Integer, Optional<?>> map, Function<Optional<?>, Double> mapper){
+    private static <T> List<QuarterSalesItem>  mapToList(Map<Integer, T> map, Function<T, Double> mapper){
         return  map.entrySet().stream().map(o->{
             QuarterSalesItem quarterSalesItem = new QuarterSalesItem();
             quarterSalesItem.setQuarter(o.getKey());
             quarterSalesItem.setTotal(mapper.apply(o.getValue()));
             return quarterSalesItem;}).collect(Collectors.toList());
     }
-
-    private static List<QuarterSalesItem>  mapToList(Map<Integer, Double> map){
-        return  map.entrySet().stream().map(o->{
-            QuarterSalesItem quarterSalesItem = new QuarterSalesItem();
-            quarterSalesItem.setQuarter(o.getKey());
-            quarterSalesItem.setTotal(o.getValue());
-            return quarterSalesItem;}).collect(Collectors.toList());
-    }
-
-    private static List<QuarterSalesItem>  mapToList1(Map<Integer, Optional<SaleItem>> map){
-        return map.entrySet().stream().map(o->{
-            QuarterSalesItem quarterSalesItem = new QuarterSalesItem();
-            quarterSalesItem.setQuarter(o.getKey());
-            if (o.getValue().isPresent()) {
-                quarterSalesItem.setTotal(o.getValue().get().getSaleNumbers());
-            }
-            return quarterSalesItem;}).collect(Collectors.toList());
-    }
-
     //Question4
     public static List<QuarterSalesItem> maxByQuarter(List<SaleItem> saleItems) {
         Assertions.assertNotNull(saleItems);
         Map<Integer, Optional<SaleItem>> map = saleItems.parallelStream()
                 .collect(Collectors.groupingBy(Utils::getQuarter, Collectors.maxBy(Comparator.comparingDouble(SaleItem::getSaleNumbers))));
-        return mapToList1(map);
+        return mapToList(map, (o)->o.get().getSaleNumbers());
     }
 
     //Question5
