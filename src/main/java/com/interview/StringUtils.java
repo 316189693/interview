@@ -14,6 +14,6 @@ public class StringUtils {
     }
 
     public static int compare(String str1, String str2) {
-        return trimStr(str2).compareTo(trimStr(str1));
+        return trimStr(str1).compareTo(trimStr(str2));
     }
 }
