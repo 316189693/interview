@@ -19,9 +19,9 @@ public class Utils {
         Assertions.assertNotNull(extensions, "extensions list is null");
         return extensions.parallelStream().sorted(
                 ExtensionUtils.<Extension>compare()
-                        .thenComparing((o1, o2) -> o2.getFirstName().compareTo(o1.getFirstName()))
-                        .thenComparing((o1, o2) -> StringUtils.trimStr(o2.getLastName()).compareTo(StringUtils.trimStr(o1.getLastName())))
-                        .thenComparing((o1, o2) -> StringUtils.trimStr(o2.getExt()).compareTo(StringUtils.trimStr(o1.getExt())))
+                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getFirstName(), o1.getFirstName()) )
+                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getLastName(), o1.getLastName()) )
+                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getExt(), o1.getExt()) )
         ).collect(Collectors.toList());
     }
 

@@ -13,7 +13,7 @@ public class StringUtils {
         return str.trim();
     }
 
-    public static int compareString(String str1, String str2) {
-        return StringUtils.trimStr(str2).compareTo(StringUtils.trimStr(str1));
+    public static int compare(String str1, String str2) {
+        return trimStr(str2).compareTo(trimStr(str1));
     }
 }
