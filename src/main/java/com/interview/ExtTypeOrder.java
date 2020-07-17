@@ -13,15 +13,16 @@ public enum ExtTypeOrder {
     OTHER("Other", 5);
     private String extType;
     private int orderNum;
+
     ExtTypeOrder(String extType, int orderNum) {
         this.extType = extType;
         this.orderNum = orderNum;
     }
-    public static int getOrderNumByExtType(String extType){
+
+    public static int getOrderNumByExtType(String extType) {
         if (null == extType || "".equals(extType.trim())) return -1;
 
-        for (ExtTypeOrder extTypeOrder: ExtTypeOrder.values()
-             ) {
+        for (ExtTypeOrder extTypeOrder : ExtTypeOrder.values()) {
             if (extTypeOrder.extType.equals(extType)) {
                 return extTypeOrder.orderNum;
             }

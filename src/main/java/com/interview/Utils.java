@@ -19,9 +19,9 @@ public class Utils {
         Assertions.assertNotNull(extensions, "extensions list is null");
         return extensions.parallelStream().sorted(
                 ExtensionUtils.<Extension>compare()
-                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getFirstName(), o1.getFirstName()) )
-                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getLastName(), o1.getLastName()) )
-                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getExt(), o1.getExt()) )
+                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getFirstName(), o1.getFirstName()))
+                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getLastName(), o1.getLastName()))
+                        .thenComparing((o1, o2) -> StringUtils.compare(o2.getExt(), o1.getExt()))
         ).collect(Collectors.toList());
     }
 
@@ -68,7 +68,7 @@ public class Utils {
     }
 
     private static int getQuarter(SaleItem saleItem) {
-       return Quarter.INSTANCE.getQuarter(saleItem.getMonth());
+        return Quarter.INSTANCE.getQuarter(saleItem.getMonth());
     }
 
     private static <T> List<QuarterSalesItem> mapToList(Map<Integer, T> map, ToDoubleFunction<T> mapper) {
