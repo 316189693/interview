@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,21 +13,6 @@ import java.util.stream.Collectors;
 
 public class Utils {
 
-    private static Map<Integer, Integer>  monthQuoarterMap = new HashMap<>();
-    static {
-        monthQuoarterMap.put(1,1);
-        monthQuoarterMap.put(2,1);
-        monthQuoarterMap.put(3,1);
-        monthQuoarterMap.put(4,2);
-        monthQuoarterMap.put(5,2);
-        monthQuoarterMap.put(6,2);
-        monthQuoarterMap.put(7,3);
-        monthQuoarterMap.put(8,3);
-        monthQuoarterMap.put(9,3);
-        monthQuoarterMap.put(10,4);
-        monthQuoarterMap.put(11,4);
-        monthQuoarterMap.put(12,4);
-    }
 
     //Question1
     public static List<Extension> sortByName(List<Extension> extensions) {
@@ -84,7 +68,7 @@ public class Utils {
     }
 
     private static int getQuarter(SaleItem saleItem) {
-       return monthQuoarterMap.get(saleItem.getMonth());
+       return Quarter.INSTANCE.getQuarter(saleItem.getMonth());
     }
 
     private static <T> List<QuarterSalesItem> mapToList(Map<Integer, T> map, ToDoubleFunction<T> mapper) {
