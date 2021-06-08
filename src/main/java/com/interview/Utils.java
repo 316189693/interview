@@ -1,13 +1,7 @@
 package com.interview;
 
 
-import org.junit.jupiter.api.Assertions;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
@@ -16,7 +10,7 @@ public class Utils {
 
     //Question1
     public static List<Extension> sortByName(List<Extension> extensions) {
-        Assertions.assertNotNull(extensions, "extensions list is null");
+        Objects.requireNonNull(extensions, "extensions list is null");
         return extensions.parallelStream().sorted(
                 ExtensionUtils.<Extension>compare()
                         .thenComparing((o1, o2) -> StringUtils.compare(o2.getFirstName(), o1.getFirstName()))
@@ -27,30 +21,41 @@ public class Utils {
 
     //Question2
     public static List<Extension> sortByExtType(List<Extension> extensions) {
-        Assertions.assertNotNull(extensions, "extensions list is null");
+        Objects.requireNonNull(extensions, "extensions list is null");
         return extensions.parallelStream().sorted(Comparator.comparing((o) -> ExtTypeOrder.getOrderNumByExtType(o.getExtType())))
                 .collect(Collectors.toList());
     }
 
+
     //Question3
     public static List<QuarterSalesItem> sumByQuarter(List<SaleItem> saleItems) {
-        Assertions.assertNotNull(saleItems, "saleItems list is null");
-        Map<Integer, Double> map = saleItems.stream()
-                .collect(Collectors.groupingBy(Utils::getQuarter, Collectors.summingDouble(SaleItem::getSaleNumbers)));
-        return mapToList(map, (o) -> o);
+
+        Objects.requireNonNull(saleItems, "saleItems list is null");
+        return saleItems.stream()
+                .collect(
+                        Collectors.collectingAndThen(
+                                Collectors.groupingBy(Utils::getQuarter,
+                                                      Collectors.summingDouble(SaleItem::getSaleNumbers)
+                                ),
+                                (obj) -> mapToList(obj, (o) -> o)
+                        )
+                );
     }
 
     //Question4
     public static List<QuarterSalesItem> maxByQuarter(List<SaleItem> saleItems) {
-        Assertions.assertNotNull(saleItems);
-        Map<Integer, Optional<SaleItem>> map = saleItems.parallelStream()
-                .collect(Collectors.groupingBy(Utils::getQuarter, Collectors.maxBy(Comparator.comparingDouble(SaleItem::getSaleNumbers))));
-        return mapToList(map, (o) -> {
-            if (null == o.get()) {
-                return 0;
-            }
-            return o.get().getSaleNumbers();
-        });
+        Objects.requireNonNull(saleItems);
+        return saleItems.parallelStream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.groupingBy(Utils::getQuarter,
+                                Collectors.maxBy(Comparator.comparingDouble(SaleItem::getSaleNumbers))
+                        ),
+                        (obj) -> mapToList(obj, (o) -> {
+                            if (null == o.get()) {
+                                return 0;
+                            }
+                            return o.get().getSaleNumbers();
+                        })));
     }
 
     //Question5
@@ -62,8 +67,8 @@ public class Utils {
      */
 
     public static int[] getUnUsedKeys(int[] allKeys, int[] usedKeys) {
-        Assertions.assertNotNull(allKeys);
-        Assertions.assertNotNull(usedKeys);
+        Objects.requireNonNull(allKeys);
+        Objects.requireNonNull(usedKeys);
         return Arrays.stream(allKeys).filter(o -> !Arrays.stream(usedKeys).anyMatch(t -> t == o)).toArray();
     }
 
