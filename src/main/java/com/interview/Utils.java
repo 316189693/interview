@@ -51,7 +51,7 @@ public class Utils {
                                 Collectors.maxBy(Comparator.comparingDouble(SaleItem::getSaleNumbers))
                         ),
                         (obj) -> mapToList(obj, (o) -> {
-                            if (null == o.get()) {
+                            if (!o.isPresent()) {
                                 return 0;
                             }
                             return o.get().getSaleNumbers();
