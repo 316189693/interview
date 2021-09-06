@@ -98,7 +98,7 @@ public class Utils {
         return Stream.of(testStr.split("")).collect(
                               Collectors.groupingBy((item)->item,
                                       Collectors.counting())
-        ).entrySet().stream().max((a,b)-> a.getValue().intValue() - b.getValue().intValue()).get().getKey();
+        ).entrySet().stream().max((a,b)-> (a.getValue()-b.getValue()) > 0 ? 1 : -1).get().getKey();
 
     }
 }
