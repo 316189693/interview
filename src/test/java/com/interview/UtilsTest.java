@@ -16,6 +16,17 @@ import java.util.stream.Stream;
  */
 public class UtilsTest {
     @Test
+    void fetchValue() throws Exception{
+        Assertions.assertEquals(Utils.fetchValue(Arrays.asList(new Integer[]{1,2,3,7,8,9})), 7);
+        Assertions.assertEquals(Utils.fetchValue(Arrays.asList(new Integer[]{1,2,3,6,7,8,9})), 6);
+        Assertions.assertThrows(Exception.class, ()->{Utils.fetchValue(Arrays.asList(new Integer[]{1,2,3,5,3,4}));});
+    }
+
+    @Test
+    void maxStr() throws Exception{
+        Assertions.assertEquals(Utils.maxStr("qqwwweeee"), "e");
+    }
+    @Test
     void  sortByName(){
         List<Extension> list = new ArrayList<>();
         Extension extension = new Extension();

@@ -2,8 +2,10 @@ package com.interview;
 
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Utils {
 
@@ -83,5 +85,20 @@ public class Utils {
             quarterSalesItem.setTotal(mapper.applyAsDouble(o.getValue()));
             return quarterSalesItem;
         }).collect(Collectors.toList());
+    }
+
+
+    // found first value from list [3,5,6,7,8], expected is big or equal than 6
+
+    public static int fetchValue(List<Integer> numList) throws Exception{
+       return numList.stream().filter(item->item >= 6).findFirst().orElseThrow(()-> new Exception("Not Fund"));
+    }
+   // found string 'ddddhhhhhfffkkkk' max char
+    public static String maxStr(String testStr) {
+        return Stream.of(testStr.split("")).collect(
+                              Collectors.groupingBy((item)->item,
+                                      Collectors.counting())
+        ).entrySet().stream().max((a,b)-> a.getValue().intValue() - b.getValue().intValue()).get().getKey();
+
     }
 }
